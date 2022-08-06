@@ -1,0 +1,32 @@
+version: '1.0'
+
+volumes:
+    newCycleData:
+
+networks:
+    backend:
+
+services:
+    mysql:
+        image: "mysql:latest"
+        volumes:
+            - newCycleData:/var/lib/mysql
+            - ./_MySQL_Init_Script:/docker-entrypoint-initdb.d
+        networks:
+            - backend
+        environment:
+            - MYSQL_ROOT_PASSWORD=root
+            - MYSQL_DATABASE=newCycleDb
+            - bind-address=0.0.0.0
+        ports:
+            - "3306:3306"
+    # api:
+    #     build:
+    #       context: "./"
+    #       dockerfile: Dockerfile
+    #     networks:
+    #         - backend
+    #     ports:
+    #         - 5000:80
+    #     depends_on:
+    #         - mysql        
