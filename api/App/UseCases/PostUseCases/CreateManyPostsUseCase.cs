@@ -23,6 +23,11 @@ namespace api.App.UseCases.PostUseCases
         {
             _postRobot.Username = _configuration.GetValue<string>("Browser:Linkedin:Username");
             _postRobot.Password = _configuration.GetValue<string>("Browser:Linkedin:Password");
+            _postRobot.SetFunctionHasPostInDatabase(async (PostDto postDto) =>
+            {
+                PostModel post = await _postRepository.GetByContent(postDto.Content);
+                return post != null;
+            });
 
             PostDto[] post = await _postRobot.GetPosts();
 

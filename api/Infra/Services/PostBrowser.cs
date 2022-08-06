@@ -8,19 +8,34 @@ namespace api.Infra.Services
         public string Username { get; set; }
         public string Password { get; set; }
         private IBrowserAdapter _robotAdapter;
+        private Func<PostDto, Task<bool>> _hasPostInDatabase;
 
         public PostBrowser(IBrowserAdapter robotAdapter)
         {
             _robotAdapter = robotAdapter;
         }
 
+        public void SetFunctionHasPostInDatabase(Func<PostDto, Task<bool>> hasPostInDatabase)
+        {
+            _hasPostInDatabase = hasPostInDatabase;
+        }
+
         public async Task<PostDto[]> GetPosts()
         {
-            await _robotAdapter.ConfigureBrowser();
-            await OpenLinkedin();
-            await Login();
-            PostDto[] posts = await SearchPosts();
-            await _robotAdapter.CloseBrowser();
+            PostDto[] posts;
+
+            try
+            {
+                await _robotAdapter.ConfigureBrowser();
+                await OpenLinkedin();
+                await Login();
+                posts = await SearchPosts();
+            }
+            finally
+            {
+                await _robotAdapter.CloseBrowser();
+            }
+
             return posts;
         }
 
@@ -60,6 +75,8 @@ namespace api.Infra.Services
 
         private async Task<PostDto[]> GetPostsInformations()
         {
+            int repetitions = 0;
+            const int maxRepetitionsInRow = 3;
             List<PostDto> posts = new();
             ElementBrowserAdapter[] elements = await _robotAdapter.GetElements(".scaffold-finite-scroll__content .occludable-update");
             foreach (var element in elements)
@@ -79,6 +96,15 @@ namespace api.Infra.Services
                 if (content != null)
                 {
                     post.Content = await content.GetProperty("innerHTML");
+                    bool alreadyHasPost = await _hasPostInDatabase(post);
+                    
+                    repetitions = alreadyHasPost ? repetitions + 1 : 0;
+
+                    if (alreadyHasPost && repetitions > maxRepetitionsInRow)
+                    {
+                        posts = new();
+                        break;
+                    }
                 }
 
                 var reactions = await element.GetElement(".social-details-social-counts__reactions-count");

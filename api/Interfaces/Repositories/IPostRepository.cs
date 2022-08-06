@@ -7,5 +7,6 @@ namespace api.Interfaces.Repositories
         Task<PostModel> Create(PostModel post);
         Task<PostModel> GetRandom();
         Task<PostModel[]> CreateMany(PostModel[] posts);
+        Task<PostModel> GetByContent(string content);
     }
 }

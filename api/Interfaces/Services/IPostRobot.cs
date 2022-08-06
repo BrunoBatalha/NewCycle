@@ -6,6 +6,7 @@ namespace api.Interfaces.Services
     {
         public string Username { get; set; }
         public string Password { get; set; }
-        Task<PostDto[]> GetPosts();
+        public void SetFunctionHasPostInDatabase(Func<PostDto, Task<bool>> hasPostInDatabase);
+        public Task<PostDto[]> GetPosts();
     }
 }
