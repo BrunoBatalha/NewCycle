@@ -1,0 +1,31 @@
+<div class="container">
+    <header class="header">
+        <h1>New Cycle</h1>
+    </header>
+
+    <main class="content__container">
+      <div class="content__header">
+        <span>{{post?.userName}}</span>
+        <span *ngIf="isGenerating">Starting a new cycle...</span>
+
+        <div class="content__container-info-quantity">
+          <div class="content__info-quantity" [title]="post ? post.reactionsQuantity + ' Comments' : 'Comments'">
+            <i class="content__icon-quantity material-icons">question_answer</i>
+            <span>{{post?.commentsQuantity}}</span>
+          </div>
+          <div class="content__info-quantity" [title]="post ? post.reactionsQuantity + ' Reactions' : 'Reactions'">
+            <i class="content__icon-quantity material-icons">favorite</i>
+            <span>{{post?.reactionsQuantity}}</span>
+          </div>
+        </div>
+      </div>
+      <div id="content" class="content__html" [innerHTML]="post?.content"></div>
+    </main>
+
+    <footer class="container-buttons">
+        <button [disabled]="!post" class="btn-copy" (click)="copyText()">Copy</button>
+        <button [disabled]="isGenerating" class="btn-generate" (click)="generate()">Generate cycle</button>
+    </footer>
+</div>
+
+<notifier-container></notifier-container>

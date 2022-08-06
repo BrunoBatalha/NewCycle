@@ -1,0 +1,5 @@
+@mixin screen-max-350() {
+  @media only screen and (max-width: 350px) {
+    @content;
+  }
+}

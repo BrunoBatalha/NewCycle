@@ -1,0 +1,151 @@
+@import '/src/assets/scss/mixins';
+@import '/src/assets/scss/variables';
+
+
+:host {
+  background-color: $primary-color;
+  display: block;
+}
+
+.container {
+  max-width: 800px;
+  padding: 36px 24px;
+  margin: 0 auto;
+  height: 100vh;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.header {
+  font-size: 2.2rem;
+  color: $neutral-color;
+  font-weight: 800;
+  letter-spacing: .1rem;
+  text-transform: uppercase;
+}
+
+.content {
+  &__container {
+    max-height: 100%;
+    overflow: hidden;
+    margin-bottom: 16px;
+    margin-top: 16px;
+    flex: 1;
+    font-size: 1.6rem;
+    background-color: $neutral-color;
+    padding: 8px 8px 12px 8px;
+    @extend %border-radius-default;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    background-color: $terciary-color;
+    color: $neutral-color;
+    padding: 12px 16px;
+    margin: -8px -8px 16px;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+    align-items: center;
+  }
+
+  &__container-info-quantity {
+    display: flex;
+  }
+
+  &__info-quantity {
+    display: flex;
+    align-items: center;
+    cursor: context-menu;
+  }
+
+  &__icon-quantity {
+    margin-right: 4px;
+  }
+
+  &__info-quantity~&__info-quantity {
+    margin-left: 8px;
+  }
+
+  &__html {
+    overflow: auto;
+    max-height: calc(100% - (48px + 16px));
+    padding-bottom: 2px;
+
+    &::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color: $secondary-color;
+      border-radius: 8px;
+    }
+
+    &::-webkit-scrollbar-thumb:hover {
+      background-color: $terciary-color;
+    }
+  }
+}
+
+
+.container-buttons {
+  display: grid;
+  grid-template-rows: minmax(94px, 1fr);
+  grid-template-columns: repeat(2, calc(50% - 4px));
+  column-gap: 8px;
+
+  @include screen-max-350() {
+    grid-template-columns: 1fr;
+    grid-template-rows: 42px 42px;
+    row-gap: 8px;
+  }
+}
+
+
+%border-radius-default {
+  border-radius: 12px;
+}
+
+%button {
+  border: none;
+  font-size: 1.8rem;
+  text-transform: uppercase;
+  letter-spacing: .1rem;
+  padding: 8px 12px;
+  font-weight: 500;
+  transition: background-color .2s;
+  @extend %border-radius-default;
+
+  &:hover:not(:disabled) {
+    background-color: rgba($terciary-color, 0.5);
+    color: $neutral-color;
+    cursor: pointer;
+    filter: brightness(1.5);
+  }
+
+  &:focus:not(:disabled),
+  &:active:not(:disabled) {
+    background-color: $terciary-color;
+    color: $neutral-color;
+    cursor: pointer;
+  }
+
+  &:disabled {
+    filter: brightness(.5);
+    cursor: not-allowed;
+  }
+}
+
+.btn-copy {
+  @extend %button;
+  background-color: $secondary-color;
+  color: $neutral-color;
+}
+
+.btn-generate {
+  @extend %button;
+  background-color: $neutral-color;
+  color: $primary-color;
+}
