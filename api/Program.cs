@@ -5,6 +5,7 @@ using api.Infra.Services;
 using api.Interfaces.Repositories;
 using api.Interfaces.Services;
 using api.Interfaces.UseCases;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApplicationContext>();
+builder.Services.AddQuartz(q => {
+    q.UseMicrosoftDependencyInjectionJobFactory();
+    
+    JobKey? jobKey = new JobKey("PostJobs-Key");
+    q.AddJob<PostJobs>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts
+        .ForJob(jobKey)
+        .WithIdentity("PostJobs-Trigger")
+        .WithCronSchedule("0 0 0/6 1/1 * ? *"));
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 // builder.Services. AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

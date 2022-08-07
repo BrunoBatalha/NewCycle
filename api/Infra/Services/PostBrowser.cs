@@ -64,7 +64,7 @@ namespace api.Infra.Services
             await _robotAdapter.ClickAsync(".search-reusables__filter-list > li:first-of-type > button");
 
             await _robotAdapter.WaitForNetworkIdleAsync();
-            for (int count = 0; count < 1; count++)
+            for (int count = 0; count < 10; count++)
             {
                 await _robotAdapter.WaitForNetworkIdleAsync();
                 await _robotAdapter.ExecuteJavascript("window.scrollTo(0, document.body.scrollHeight)");
