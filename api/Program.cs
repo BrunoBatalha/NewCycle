@@ -25,7 +25,8 @@ builder.Services.AddQuartz(q => {
     q.AddTrigger(opts => opts
         .ForJob(jobKey)
         .WithIdentity("PostJobs-Trigger")
-        .WithCronSchedule("0 0 0/6 1/1 * ? *"));
+        .WithCronSchedule("0 0 0/6 1/1 * ? *")); // every 6 hours
+        // .WithCronSchedule("0 0/3 * 1/1 * ? *")); // every 3 minutes
 });
 builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
