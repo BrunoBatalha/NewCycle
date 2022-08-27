@@ -6,6 +6,8 @@ Um projeto para quem está sempre iniciando ou encerrando ciclos no Linkedin �
 - Angular
 - ASP.NET Core
 - MySQL
+- [Quartz](https://www.quartz-scheduler.net/) (CronJob)
+- [PuppeteerSharp](https://www.puppeteersharp.com)
 
 ### Descrição
 
